@@ -77,6 +77,7 @@ For absences longer than 3 hours, test precision was approximately
   evaluation, and model-saving workflow.
 - `README.md` — project overview and execution instructions.
 - `.gitignore` — exclusions for local and generated files.
+- `requirements.txt` - pinned dependencies for running the notebook.
 
 ## Data Availability
 
@@ -93,10 +94,14 @@ to preprocessing and may produce different results.
 
 ## Running the Notebook
 
+Tested with Python 3.13.9. Run the commands below from the repository directory.
+
 1. Download or clone this repository.
 2. Obtain the expected dataset from an authorized source and place
    `Absenteeism_data.csv` beside the notebook.
 3. In a Python environment, install the required packages:
 ```bash
-   pip install pandas numpy scikit-learn joblib notebook
+   pip install -r requirements.txt
+
+
    
