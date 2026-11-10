@@ -109,10 +109,11 @@ Tested with Python 3.13.9. Requires Python 3.11 or newer.
 
 1. Download or clone this repository.
 2. Ensure that `Absenteeism_data.csv` is in the same directory as `absenteeism_prediction.ipynb`.
-3. Open a terminal in the repository directory and install the required packages:
-```bash
-pip install -r requirements.txt
-4. Start Jupyter and open the notebook:
-jupyter notebook absenteeism_prediction.ipynb
+3. Open a terminal in the repository directory and install the required packages: `pip install -r requirements.txt`
+4. Start Jupyter and open the notebook: `jupyter notebook absenteeism_prediction.ipynb`
 5. Run all cells from top to bottom (Kernel → Restart & Run All).
-   
+
+## License
+
+The code in this repository is released under the MIT License. The dataset `Absenteeism_data.csv` is subject to its own terms; see the data source section above.
+`
