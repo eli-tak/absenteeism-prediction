@@ -1,119 +1,37 @@
-# Employee Absenteeism Prediction
+# Absenteeism Prediction
 
-An educational machine learning project that classifies absence records as 3 hours or less or more than 3 hours, using logistic regression.
+An educational machine learning project that classifies absence records by duration using logistic regression. The input data and all analysis are included in this repository.
 
-The notebook covers data preprocessing, model training, cross-validation, baseline comparison, and pipeline persistence.
+## Project files
 
-## Project Overview
+- `absenteeism_prediction.ipynb`: data preparation, modeling, evaluation, and model saving.
+- `Absenteeism_data.csv`: input data used by the notebook.
+- `requirements.txt`: Python packages used in the tested environment.
 
-The dataset used in this notebook contains 700 absence records.
+## Run the notebook
 
-The target classes are:
+Use Python 3 and install the dependencies from the project directory:
 
-- **Class 0:** Absenteeism time of 3 hours or less.
-- **Class 1:** Absenteeism time of more than 3 hours.
+```bash
+pip install -r requirements.txt
+jupyter notebook
+```
 
-The 3-hour threshold was derived from the dataset's median. This is a classification task, not a prediction of the exact number of absence hours.
+Open `absenteeism_prediction.ipynb` and run the cells in order. The CSV must be in the same directory. Execution creates `models/absenteeism_pipeline.joblib`; the model expects the engineered columns described in the notebook, not raw CSV records. Only load model files from trusted sources.
 
-## Workflow
+## Method and results
 
-1. Inspect the dataset and check for missing values.
-2. Group absence reasons into four categories.
-3. Extract month and day of the week from dates.
-4. Encode education as a binary feature.
-5. Define the target and remove absence hours from the input features.
-6. Create a stratified 80/20 training–test split.
-7. Standardize non-binary features using training data only.
-8. Train a logistic regression classifier.
-9. Evaluate accuracy, precision, recall, and F1-score.
-10. Perform five-fold stratified cross-validation with a pipeline.
-11. Compare performance against a majority-class baseline.
-12. Save the fitted pipeline and verify predictions after reloading.
+The notebook reserves 20% of rows for testing, then calculates the absence-duration median from the training partition only. A duration above that threshold is class 1. For this split the threshold is 3 hours. A logistic regression pipeline is compared with a majority-class baseline and evaluated with cross-validation and a test set.
 
-## Results
-
-| Metric | Result |
-|---|---|
-| Training accuracy | 76.96% |
-| Test accuracy | 75.71% |
-| Mean cross-validation accuracy | 74.29% |
-| Cross-validation accuracy standard deviation | 4.01 percentage points |
-| Mean cross-validation F1 for class 1 | 0.702 |
-| Majority-class baseline CV accuracy | Approximately 54.5% |
-
-Cross-validation was performed on the training set only.
-
-### Test Confusion Matrix
-
-Rows represent actual classes; columns represent predicted classes.
-
-| Actual / Predicted | 3 hours or less | More than 3 hours |
-|---|---|---|
-| 3 hours or less | 57 | 19 |
-| More than 3 hours | 15 | 49 |
-
-The model correctly classified 106 of 140 test records.
-
-For absences longer than 3 hours, test precision was approximately 0.72 and recall was approximately 0.77.
-
-## Tools
-
-- Python
-- pandas
-- NumPy
-- scikit-learn
-- joblib
-- Jupyter Notebook
-
-## Repository Contents
-
-- `Absenteeism_data.csv` — course-provided dataset used by the notebook.
-- `absenteeism_prediction.ipynb` — preprocessing, modeling, evaluation, and model-saving workflow.
-- `README.md` — project overview and execution instructions.
-- `.gitignore` — exclusions for local and generated files.
-- `requirements.txt` — pinned dependencies for running the notebook.
-
-The notebook saves the fitted pipeline to `models/absenteeism_pipeline.joblib` when the model-saving cells are executed.
-
-## Data Source and Modifications
-
-This repository includes `Absenteeism_data.csv`, a course-provided educational adaptation of the Absenteeism at Work dataset.
-
-### Original Source
-
-Martiniano, A., & Ferreira, R. (2012). *Absenteeism at Work*. UCI Machine Learning Repository. https://doi.org/10.24432/C5X882
-
-The original UCI dataset is licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
-
-### Course Version
-
-It contains 700 records and 12 columns. Its 11 non-date columns match the corresponding values in the first 700 records of the original UCI dataset. Some original columns were omitted and some column names were changed.
-
-The course version also includes a `Date` column that is not present in the original UCI CSV. These dates should not be interpreted as the original observation dates. Calendar features derived from them are used for educational purposes.
-
-The UCI license statement above refers to the original dataset; a separate redistribution license for the course-specific modifications has not been verified.
+In the recorded execution, test accuracy was 78.57% (110 of 140 records); precision and recall for longer absences were approximately 0.75 and 0.72. Mean training cross-validation accuracy was 75.36%. These figures describe this particular split, not a guarantee of future performance. Cross-validation uses a threshold fixed from the whole training partition.
 
 ## Limitations
 
-- This is an educational project, not a production-ready tool for evaluating employees or making employment decisions.
-- The target threshold was derived from the full dataset's median before the training–test split, rather than being set independently.
-- Random row-based splitting does not establish performance on previously unseen employees or future time periods. Records from the same employee may appear in both training and validation data.
-- The course-provided dates are not verified original observation dates, which limits the interpretation of calendar features.
-- The reason for absence may not be available at the time a real-world prediction would need to be made.
-- Model coefficients describe associations, not causal effects.
-- The saved pipeline expects engineered features. It does not perform all preprocessing directly from the raw CSV.
+- Random row splitting can place records from the same employee in both partitions and does not evaluate future periods or unseen employees.
+- The availability of the reason for absence depends on when predictions are made.
+- The test set was inspected during development and is not a fresh independent evaluation.
+- This educational model is not suitable for employee assessment or other consequential decisions.
 
-## Running the Notebook
+## Data source
 
-Tested with Python 3.13.9. Requires Python 3.11 or newer.
-
-1. Download or clone this repository.
-2. Ensure that `Absenteeism_data.csv` is in the same directory as `absenteeism_prediction.ipynb`.
-3. Open a terminal in the repository directory and install the required packages: `pip install -r requirements.txt`
-4. Start Jupyter and open the notebook: `jupyter notebook absenteeism_prediction.ipynb`
-5. Run all cells from top to bottom (Kernel → Restart & Run All).
-
-## License
-
-The code in this repository is released under the MIT License. The dataset `Absenteeism_data.csv` is subject to its own terms; see the data source section above.
-
+The source and license of the supplied CSV have not been verified. Confirm the dataset provenance and redistribution terms before publishing or reusing it.
